@@ -18,7 +18,8 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/scripts',
-    '@sidebase/nuxt-auth'
+    '@sidebase/nuxt-auth',
+    '@nuxt/icon'
   ],
   image: {
     // IPX is the default provider. You can add options here if needed.

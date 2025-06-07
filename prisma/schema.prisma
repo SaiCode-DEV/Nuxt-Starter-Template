@@ -13,7 +13,7 @@ model User {
   email          String    @unique(map: "name")
   username       String    @unique(map: "username")
   password       String
-  profilePicture String?   @default("https://example.com/default-profile-picture.png")
+  profilePicture String?   
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   lastLogin      DateTime?

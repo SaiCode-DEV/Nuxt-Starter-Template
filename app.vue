@@ -8,7 +8,14 @@
 </template>
 
 <script setup lang="ts">
-// No additional script needed for this basic setup
+import { useThemeStore } from '~/stores/theme'
+
+// Initialize theme system
+const themeStore = useThemeStore()
+
+onMounted(() => {
+  themeStore.initTheme()
+})
 </script>
 
 <style>

@@ -1,10 +1,11 @@
 <template>
-  <v-app>
+  <div>
     <NavBar />
     <v-main>
       <NuxtPage />
     </v-main>
-  </v-app>
+    <FooterLoggedIn />
+  </div>
 </template>
 
 <script setup lang="ts"></script>
