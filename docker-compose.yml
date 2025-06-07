@@ -1,0 +1,17 @@
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: nuxt-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: nuxt
+    ports:
+      - "5430:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:
