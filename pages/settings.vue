@@ -75,7 +75,6 @@
                 type="email"
                 :rules="emailRules"
                 variant="outlined"
-                prepend-inner-icon="mdi:email"
                 :readonly="updatingEmail"
               />
 
@@ -84,7 +83,6 @@
                 color="primary"
                 :disabled="!emailForm || newEmail === session?.user?.email"
                 :loading="updatingEmail"
-                prepend-icon="mdi:content-save"
                 block
               >
                 Update Email
@@ -106,7 +104,6 @@
                 type="password"
                 :rules="[rules.required]"
                 variant="outlined"
-                prepend-inner-icon="mdi:lock"
                 :readonly="updatingPassword"
                 class="mb-4"
               />
@@ -117,7 +114,6 @@
                 type="password"
                 :rules="passwordRules"
                 variant="outlined"
-                prepend-inner-icon="mdi:lock-plus"
                 :readonly="updatingPassword"
                 class="mb-4"
               />
@@ -128,7 +124,6 @@
                 type="password"
                 :rules="confirmPasswordRules"
                 variant="outlined"
-                prepend-inner-icon="mdi:lock-check"
                 :readonly="updatingPassword"
                 class="mb-4"
               />
@@ -138,7 +133,6 @@
                 color="primary"
                 :disabled="!passwordForm"
                 :loading="updatingPassword"
-                prepend-icon="mdi:content-save"
                 block
               >
                 Update Password

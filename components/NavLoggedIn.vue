@@ -28,7 +28,8 @@
     <v-app-bar app flat class="frosted-navbar" scroll-behavior="elevate">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
 
-      <v-toolbar-title class="font-weight-bold" to="/">
+      <Icon name="mdi:rocket-launch" size="32" />
+      <v-toolbar-title class="font-weight-bold">
         MinecraftME Tracker
       </v-toolbar-title>
 
@@ -77,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
+  import { computed, ref } from 'vue'
   import { useThemeStore } from '~/stores/theme'
 
   const drawer = ref(false)
