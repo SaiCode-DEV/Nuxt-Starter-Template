@@ -24,13 +24,14 @@ A modern, full-stack starter template built with cutting-edge technologies. Ever
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Docker (optional, for database)
 
 ### Installation
 
 1. **Clone & Install Dependencies**
+
    ```bash
    git clone <repository-url>
    cd your-project-name
@@ -38,39 +39,43 @@ A modern, full-stack starter template built with cutting-edge technologies. Ever
    ```
 
 2. **Configure Environment**
-   
+
    Copy the environment template and configure your variables:
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Set up your environment variables for database and authentication.
 
 3. **Database Setup**
-   
+
    This template uses **PostgreSQL** as the database. You have several options:
-   
+
    **Option A: Using Docker (Recommended)**
+
    ```bash
    docker-compose up -d
    ```
-   
+
    **Option B: Local PostgreSQL Installation**
+
    - Install PostgreSQL locally on your machine
    - Create a database named `nuxt`
    - Update your `.env` file with your local database credentials
-   
-   
+
    After setting up PostgreSQL, run database migrations:
+
    ```bash
    npx prisma migrate dev
    ```
 
 4. **Start Development Server**
+
    ```bash
    npm run dev
    ```
-   
+
    Navigate to `http://localhost:3000` to see your application running.
 
 ## 📦 Available Scripts

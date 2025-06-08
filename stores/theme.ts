@@ -31,7 +31,9 @@ export const useThemeStore = defineStore('theme', () => {
     let targetTheme = 'dark'
 
     if (mode.value === 'system') {
-      targetTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      targetTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
     } else {
       targetTheme = mode.value
     }
@@ -74,7 +76,9 @@ export const useThemeStore = defineStore('theme', () => {
   const getCurrentTheme = computed(() => {
     if (mode.value === 'system') {
       if (import.meta.client) {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        return window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
       }
       return 'dark' // fallback for SSR
     }
@@ -101,6 +105,6 @@ export const useThemeStore = defineStore('theme', () => {
     toggleTheme,
     initTheme,
     getCurrentTheme,
-    getThemeIcon
+    getThemeIcon,
   }
 })

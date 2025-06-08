@@ -42,59 +42,59 @@
 </template>
 
 <script setup>
-import { useNotification } from "@kyvg/vue3-notification";
-const { signIn } = useAuth();
-const { notify } = useNotification();
+  import { useNotification } from '@kyvg/vue3-notification'
+  const { signIn } = useAuth()
+  const { notify } = useNotification()
 
-definePageMeta({
-  layout: "auth",
-  auth: {
-    unauthenticatedOnly: true,
-    navigateAuthenticatedTo: "/",
-  },
-});
+  definePageMeta({
+    layout: 'auth',
+    auth: {
+      unauthenticatedOnly: true,
+      navigateAuthenticatedTo: '/',
+    },
+  })
 
-const username = ref("");
-const password = ref("");
+  const username = ref('')
+  const password = ref('')
 
-const form = ref(false);
-const rules = ref({
-  required: (value) => !!value || "Field is required",
-});
+  const form = ref(false)
+  const rules = ref({
+    required: value => !!value || 'Field is required',
+  })
 
-const login = async (username, password) => {
-  try {
-    const response = await signIn("credentials", {
-      redirect: false,
-      username,
-      password,
-    });
+  const login = async (username, password) => {
+    try {
+      const response = await signIn('credentials', {
+        redirect: false,
+        username,
+        password,
+      })
 
-    if (response?.error) {
+      if (response?.error) {
+        notify({
+          title: 'Login failed',
+          text: 'Invalid username or password. Please try again.',
+          type: 'error',
+          duration: 10000,
+        })
+        return
+      }
+
+      if (response?.ok) {
+        notify({
+          title: 'Success',
+          text: 'Login successful! Welcome back.',
+          type: 'success',
+        })
+        await navigateTo(useRelativeCallbackUrl(useRoute()).value)
+      }
+    } catch (error) {
+      console.error('Login error:', error)
       notify({
-        title: "Login failed",
-        text: "Invalid username or password. Please try again.",
-        type: "error",
-        duration: 10000,
-      });
-      return;
+        title: 'Login failed',
+        text: 'An unexpected error occurred. Please try again.',
+        type: 'error',
+      })
     }
-
-    if (response?.ok) {
-      notify({
-        title: "Success",
-        text: "Login successful! Welcome back.",
-        type: "success",
-      });
-      await navigateTo(useRelativeCallbackUrl(useRoute()).value);
-    }
-  } catch (error) {
-    console.error("Login error:", error);
-    notify({
-      title: "Login failed",
-      text: "An unexpected error occurred. Please try again.",
-      type: "error",
-    });
   }
-};
 </script>

@@ -3,21 +3,21 @@
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <Notification/>
+    <Notification />
   </v-app>
 </template>
 
 <script setup lang="ts">
-import { useThemeStore } from '~/stores/theme'
+  import { useThemeStore } from '~/stores/theme'
 
-// Initialize theme system
-const themeStore = useThemeStore()
+  // Initialize theme system
+  const themeStore = useThemeStore()
 
-onMounted(() => {
-  themeStore.initTheme()
-})
+  onMounted(() => {
+    themeStore.initTheme()
+  })
 </script>
 
 <style>
-/* You can add global styles here if needed */
+  /* You can add global styles here if needed */
 </style>

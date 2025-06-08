@@ -7,8 +7,8 @@
       <v-row align="center" justify="space-between">
         <v-col cols="12" md="6">
           <p class="mb-0">
-            © {{ new Date().getFullYear() }} SaiCode's Starter Template. Built with
-            ❤️ using Nuxt & Vuetify
+            © {{ new Date().getFullYear() }} SaiCode's Starter Template. Built
+            with ❤️ using Nuxt & Vuetify
           </p>
         </v-col>
         <v-col cols="12" md="6" class="text-md-end">
@@ -28,22 +28,22 @@
 </template>
 
 <script lang="ts" setup>
-// Social links
-const socialLinks = ref([
-  {
-    name: "GitHub",
-    icon: "mdi-github",
-    url: "https://github.com",
-  },
-  {
-    name: "Twitter",
-    icon: "mdi-twitter",
-    url: "https://twitter.com",
-  },
-  {
-    name: "Discord",
-    icon: "mdi-discord",
-    url: "https://discord.com",
-  },
-]);
+  // Social links
+  const socialLinks = ref([
+    {
+      name: 'GitHub',
+      icon: 'mdi-github',
+      url: 'https://github.com',
+    },
+    {
+      name: 'Twitter',
+      icon: 'mdi-twitter',
+      url: 'https://twitter.com',
+    },
+    {
+      name: 'Discord',
+      icon: 'mdi-discord',
+      url: 'https://discord.com',
+    },
+  ])
 </script>

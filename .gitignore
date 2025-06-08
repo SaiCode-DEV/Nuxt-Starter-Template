@@ -28,3 +28,4 @@ logs
 
 # Prisma data
 generated
+public/uploads

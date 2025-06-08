@@ -4,8 +4,8 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
     timeline: {
-      enabled: true
-    }
+      enabled: true,
+    },
   },
 
   modules: [
@@ -19,11 +19,11 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/scripts',
     '@sidebase/nuxt-auth',
-    '@nuxt/icon'
+    '@nuxt/icon',
   ],
   image: {
     // IPX is the default provider. You can add options here if needed.
-    // Example: 
+    // Example:
     // ipx: {
     //   maxAge: 3600 // Cache images for 1 hour
     // }
@@ -33,8 +33,8 @@ export default defineNuxtConfig({
       type: 'authjs',
     },
     globalAppMiddleware: {
-      isEnabled: true
-    }
+      isEnabled: true,
+    },
   },
   vuetify: {
     moduleOptions: {
@@ -43,19 +43,18 @@ export default defineNuxtConfig({
     vuetifyOptions: {
       theme: {
         defaultTheme: 'dark',
-      }
-    }
+      },
+    },
   },
   build: {
-    transpile: ['vue-chartjs', 'chart.js', 'chartjs-plugin-zoom']
+    transpile: ['vue-chartjs', 'chart.js', 'chartjs-plugin-zoom'],
   },
   vite: {
     optimizeDeps: {
-      include: ['hammerjs']
-    }
+      include: ['hammerjs'],
+    },
   },
-  routeRules: {
-  },
+  routeRules: {},
 
   runtimeConfig: {
     public: {
@@ -63,5 +62,5 @@ export default defineNuxtConfig({
     },
     // Variables here are only available server-side
     useDummyData: true,
-  }
+  },
 })

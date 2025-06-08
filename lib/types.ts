@@ -20,7 +20,8 @@ export interface AuthToken {
   id?: number
   nombre?: string
   email?: string | null
-  [key: string]: any
+  profilePicture?: string | null
+  [key: string]: unknown
 }
 
 export interface AuthSession {
@@ -30,9 +31,10 @@ export interface AuthSession {
     email?: string | null
     name?: string | null
     image?: string | null
+    profilePicture?: string | null
   }
   expires: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // Registration form data

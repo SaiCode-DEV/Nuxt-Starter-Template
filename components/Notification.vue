@@ -12,12 +12,12 @@
 </template>
 
 <style lang="scss">
-.notifications {
-  width: unset !important;
-  margin-top: 20px;
-  margin-right: 20px;
-  .v-alert {
-    margin-bottom: 10px;
+  .notifications {
+    width: unset !important;
+    margin-top: 20px;
+    margin-right: 20px;
+    .v-alert {
+      margin-bottom: 10px;
+    }
   }
-}
 </style>

@@ -7,7 +7,13 @@
     "dev": "nuxt dev --dotenv .env",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "nuxt typecheck",
+    "lint-and-format": "npm run lint:fix && npm run format"
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^3.4.1",
@@ -23,12 +29,14 @@
     "@prisma/extension-accelerate": "^2.0.0",
     "@prisma/nuxt": "^0.3.0",
     "@sidebase/nuxt-auth": "^0.10.1",
+    "@types/formidable": "^3.4.5",
     "@unhead/vue": "^2.0.9",
     "argon2": "^0.43.0",
     "chart.js": "^4.4.9",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-plugin-zoom": "^2.2.0",
     "eslint": "^9.27.0",
+    "formidable": "^3.5.4",
     "izitoast": "^1.4.0",
     "next-auth": "~4.21.1",
     "nuxt": "^3.17.4",
@@ -43,7 +51,13 @@
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
+    "@iconify-json/mdi": "^1.2.3",
     "@types/xml2js": "^0.4.14",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
+    "prettier": "^3.5.3",
     "prisma": "^6.8.2"
   }
 }

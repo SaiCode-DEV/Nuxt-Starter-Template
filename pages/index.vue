@@ -180,188 +180,194 @@
 </template>
 
 <script setup lang="ts">
-// Auth composable
-const { status } = useAuth();
+  // Auth composable
+  const { status } = useAuth()
 
-// Page meta
-definePageMeta({
-  auth: false,
-});
+  // Page meta
+  definePageMeta({
+    auth: false,
+  })
 
-// Use Nuxt Head for SEO
-useHead({
-  title: "Welcome - Nuxt Starter Template",
-  meta: [
+  // Use Nuxt Head for SEO
+  useHead({
+    title: 'MinecraftME Tracker - Storage Management',
+    meta: [
+      {
+        name: 'description',
+        content:
+          'Track and manage your Minecraft ME storage systems with ease. Monitor items, automate inventory, and optimize storage efficiency.',
+      },
+    ],
+  })
+
+  // Features data
+  const features = ref([
     {
-      name: "description",
-      content:
-        "A modern full-stack starter template built with Nuxt 3, Vuetify, and Auth.",
+      title: 'Nuxt 3',
+      description:
+        'The intuitive Vue framework with server-side rendering, static generation, and more.',
+      icon: 'logos:nuxt-icon',
+      color: '#00DC82',
     },
-  ],
-});
+    {
+      title: 'Vuetify',
+      description:
+        'Beautiful Material Design components for Vue.js applications.',
+      icon: 'logos:vuetifyjs',
+      color: '#1976D2',
+    },
+    {
+      title: 'Authentication',
+      description:
+        'Secure user authentication and session management built-in.',
+      icon: 'mdi:shield-check',
+      color: '#FF9800',
+    },
+    {
+      title: 'TypeScript',
+      description: 'Full type safety and enhanced developer experience.',
+      icon: 'logos:typescript-icon',
+      color: '#3178C6',
+    },
+    {
+      title: 'Prisma ORM',
+      description: 'Type-safe database access with modern ORM capabilities.',
+      icon: 'logos:prisma',
+      color: '#2D3748',
+    },
+    {
+      title: 'Modern Tooling',
+      description:
+        'ESLint, hot reloading, and optimized build process included.',
+      icon: 'mdi:tools',
+      color: '#9C27B0',
+    },
+  ])
 
-// Features data
-const features = ref([
-  {
-    title: "Nuxt 3",
-    description:
-      "The intuitive Vue framework with server-side rendering, static generation, and more.",
-    icon: "logos:nuxt-icon",
-    color: "#00DC82",
-  },
-  {
-    title: "Vuetify",
-    description:
-      "Beautiful Material Design components for Vue.js applications.",
-    icon: "logos:vuetifyjs",
-    color: "#1976D2",
-  },
-  {
-    title: "Authentication",
-    description: "Secure user authentication and session management built-in.",
-    icon: "mdi:shield-check",
-    color: "#FF9800",
-  },
-  {
-    title: "TypeScript",
-    description: "Full type safety and enhanced developer experience.",
-    icon: "logos:typescript-icon",
-    color: "#3178C6",
-  },
-  {
-    title: "Prisma ORM",
-    description: "Type-safe database access with modern ORM capabilities.",
-    icon: "logos:prisma",
-    color: "#2D3748",
-  },
-  {
-    title: "Modern Tooling",
-    description: "ESLint, hot reloading, and optimized build process included.",
-    icon: "mdi:tools",
-    color: "#9C27B0",
-  },
-]);
-
-// Quick start steps
-const quickStartSteps = ref([
-  {
-    title: "Clone & Install",
-    description:
-      "Clone the repository and install dependencies with npm or yarn.",
-    icon: "mdi-download",
-    color: "primary",
-  },
-  {
-    title: "Configure Environment",
-    description: "Set up your environment variables for database and auth.",
-    icon: "mdi-cog",
-    color: "secondary",
-  },
-  {
-    title: "Run Development Server",
-    description:
-      "Start the development server and begin building your application.",
-    icon: "mdi-play",
-    color: "success",
-  },
-  {
-    title: "Deploy",
-    description: "Deploy to your favorite platform with built-in optimization.",
-    icon: "mdi-cloud-upload",
-    color: "info",
-  },
-]);
+  // Quick start steps
+  const quickStartSteps = ref([
+    {
+      title: 'Clone & Install',
+      description:
+        'Clone the repository and install dependencies with npm or yarn.',
+      icon: 'mdi-download',
+      color: 'primary',
+    },
+    {
+      title: 'Configure Environment',
+      description: 'Set up your environment variables for database and auth.',
+      icon: 'mdi-cog',
+      color: 'secondary',
+    },
+    {
+      title: 'Run Development Server',
+      description:
+        'Start the development server and begin building your application.',
+      icon: 'mdi-play',
+      color: 'success',
+    },
+    {
+      title: 'Deploy',
+      description:
+        'Deploy to your favorite platform with built-in optimization.',
+      icon: 'mdi-cloud-upload',
+      color: 'info',
+    },
+  ])
 </script>
 
 <style lang="scss" scoped>
-.hero-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-      circle at 30% 20%,
-      rgba(255, 255, 255, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 70% 80%,
-      rgba(255, 255, 255, 0.05) 0%,
-      transparent 50%
-    );
-}
-
-.hero-icon {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
+  .hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
   }
-  50% {
-    transform: translateY(-10px);
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(
+        circle at 30% 20%,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 70% 80%,
+        rgba(255, 255, 255, 0.05) 0%,
+        transparent 50%
+      );
   }
-}
 
-.hero-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
+  .hero-icon {
+    animation: float 3s ease-in-out infinite;
+  }
 
-.hero-subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  opacity: 0.9;
-  max-width: 600px;
-  margin: 0 auto;
-}
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
 
-.feature-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-}
-
-.code-preview {
-  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
-}
-
-.code-block {
-  background: transparent;
-  color: inherit;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.text-green {
-  color: #4caf50;
-}
-
-.text-yellow {
-  color: #ff9800;
-}
-
-@media (max-width: 960px) {
   .hero-title {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
   }
-}
+
+  .feature-card {
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .code-preview {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  }
+
+  .code-block {
+    background: transparent;
+    color: inherit;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .text-green {
+    color: #4caf50;
+  }
+
+  .text-yellow {
+    color: #ff9800;
+  }
+
+  @media (max-width: 960px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+    }
+  }
 </style>
