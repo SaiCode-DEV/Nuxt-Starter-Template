@@ -57,7 +57,7 @@
                         variant="outlined"
                         color="white"
                         class="px-8"
-                        href="https://github.com"
+                        href="https://github.com/SaiCode-DEV/Nuxt-Starter-Template"
                         target="_blank"
                       >
                         <Icon name="mdi:github" class="mr-2" />
