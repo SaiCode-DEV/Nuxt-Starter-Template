@@ -55,5 +55,6 @@ export interface PublicUser {
   id: number
   username: string
   profilePicture?: string | null
+  role?: 'USER' | 'ADMIN'
   createdAt: Date
 }

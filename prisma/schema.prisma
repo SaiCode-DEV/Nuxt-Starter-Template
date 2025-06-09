@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  binaryTargets = ["linux-musl-openssl-3.0.x","linux-musl-arm64-openssl-3.0.x","windows"]
 }
 
 datasource db {
@@ -13,7 +13,8 @@ model User {
   email          String    @unique(map: "name")
   username       String    @unique(map: "username")
   password       String
-  profilePicture String?   
+  role           String    @default("USER")
+  profilePicture String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   lastLogin      DateTime?

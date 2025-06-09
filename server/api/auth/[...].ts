@@ -5,7 +5,7 @@ import prisma from '~/lib/prisma'
 import type { AuthCredentials, User } from '~/lib/types'
 
 export default NuxtAuthHandler({
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/auth/login',
     signOut: '/auth/login',
@@ -54,10 +54,10 @@ export default NuxtAuthHandler({
         token.profilePicture = (user as unknown as User).profilePicture
       }
 
-      // Refresh user data from database when session is updated
-      if (trigger === 'update' && token.id) {
+      // Always validate that the user still exists in the database
+      if (token.id) {
         try {
-          const freshUser = await prisma.user.findUnique({
+          const existingUser = await prisma.user.findUnique({
             where: { id: token.id as number },
             select: {
               id: true,
@@ -67,13 +67,21 @@ export default NuxtAuthHandler({
             },
           })
 
-          if (freshUser) {
-            token.nombre = freshUser.username
-            token.email = freshUser.email
-            token.profilePicture = freshUser.profilePicture
+          if (!existingUser) {
+            // User has been deleted, throw error to invalidate token/session
+            throw new Error('User not found - token invalidated')
+          }
+
+          // Refresh user data from database when session is updated
+          if (trigger === 'update') {
+            token.nombre = existingUser.username
+            token.email = existingUser.email
+            token.profilePicture = existingUser.profilePicture
           }
         } catch (error) {
-          console.error('Error refreshing user data:', error)
+          console.error('Error validating user:', error)
+          // Throw error to invalidate the token/session
+          throw new Error('Token validation failed')
         }
       }
 
@@ -93,28 +101,24 @@ export default NuxtAuthHandler({
             },
           })
 
-          if (freshUser) {
-            // Extend session.user with fresh data
-            const extendedUser = session.user as typeof session.user & {
-              id?: number
-              nombre?: string
-            }
-            extendedUser.id = freshUser.id
-            extendedUser.nombre = freshUser.username
-            extendedUser.email = freshUser.email
-            extendedUser.image = freshUser.profilePicture
+          if (!freshUser) {
+            // User has been deleted, throw error to invalidate session
+            throw new Error('User not found - session invalidated')
           }
-        } catch (error) {
-          console.error('Error fetching user data for session:', error)
-          // Fallback to token data if database fetch fails
+
+          // Extend session.user with fresh data
           const extendedUser = session.user as typeof session.user & {
             id?: number
             nombre?: string
           }
-          extendedUser.id = token.id as number
-          extendedUser.nombre = token.nombre as string
-          extendedUser.email = token.email as string | null
-          extendedUser.image = token.profilePicture as string | null
+          extendedUser.id = freshUser.id
+          extendedUser.nombre = freshUser.username
+          extendedUser.email = freshUser.email
+          extendedUser.image = freshUser.profilePicture
+        } catch (error) {
+          console.error('Error fetching user data for session:', error)
+          // If there's a database error or user doesn't exist, throw error to invalidate session
+          throw new Error('Session validation failed')
         }
       }
       return session

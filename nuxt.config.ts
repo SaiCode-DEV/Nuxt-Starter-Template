@@ -20,17 +20,30 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@sidebase/nuxt-auth',
     '@nuxt/icon',
+    '@nuxtjs/i18n',
   ],
   image: {
-    // IPX is the default provider. You can add options here if needed.
-    // Example:
-    // ipx: {
-    //   maxAge: 3600 // Cache images for 1 hour
-    // }
+    presets: {
+      avatar: {
+        modifiers: {
+          width: 32,
+          height: 32,
+        },
+      },
+    },
+    ipx: {
+      maxAge: 3600, // Cache images for 1 hour
+    },
   },
   auth: {
+    originEnvKey: 'AUTH_ORIGIN',
     provider: {
       type: 'authjs',
+      trustHost: true,
+    },
+    sessionRefresh: {
+      enablePeriodically: 30_000,
+      enableOnWindowFocus: true,
     },
     globalAppMiddleware: {
       isEnabled: true,
@@ -53,9 +66,31 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: ['hammerjs'],
     },
+    resolve: {
+      alias: {
+        '.prisma/client/index-browser':
+          './node_modules/.prisma/client/index-browser.js',
+      },
+    },
+  },
+  nitro: {
+    experimental: {
+      wasm: true,
+    },
+    esbuild: {
+      options: {
+        target: 'esnext',
+      },
+    },
   },
   routeRules: {},
-
+  i18n: {
+    defaultLocale: 'de',
+    locales: [
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'de', name: 'Deutsch', file: 'de.json' },
+    ],
+  },
   runtimeConfig: {
     public: {
       // Variables in public are exposed client-side

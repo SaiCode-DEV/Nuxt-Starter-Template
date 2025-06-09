@@ -30,7 +30,7 @@
 
       <Icon name="mdi:rocket-launch" size="32" class="mr-3" />
       <v-toolbar-title class="font-weight-bold">
-        MinecraftME Tracker
+        SaiCode's Template
       </v-toolbar-title>
 
       <v-spacer />

@@ -190,7 +190,7 @@
 
   // Use Nuxt Head for SEO
   useHead({
-    title: 'MinecraftME Tracker - Storage Management',
+    title: "SaiCode's Starter Template - Storage Management",
     meta: [
       {
         name: 'description',
