@@ -85,7 +85,7 @@ export default defineNuxtConfig({
   },
   routeRules: {},
   i18n: {
-    defaultLocale: 'de',
+    defaultLocale: 'en',
     locales: [
       { code: 'en', name: 'English', file: 'en.json' },
       { code: 'de', name: 'Deutsch', file: 'de.json' },

@@ -39,6 +39,27 @@
         <Icon :name="themeStore.getThemeIcon" size="20" />
       </v-btn>
 
+      <!-- Language Selector -->
+      <v-menu offset-y>
+        <template #activator="{ props }">
+          <v-btn v-bind="props" variant="text" class="text-none">
+            <Icon name="mdi:translate" size="20" />
+            <span class="ml-2">{{
+              locales.find(l => l.code === $i18n.locale)?.name
+            }}</span>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="locale in locales"
+            :key="locale.code"
+            @click="setLocale(locale.code)"
+          >
+            <v-list-item-title>{{ locale.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
       <v-btn to="/auth/login" variant="outlined" color="white" class="mr-2">
         <Icon name="mdi:login" class="mr-2" />
         Sign In
@@ -56,6 +77,7 @@
   import { useThemeStore } from '~/stores/theme'
 
   const drawer = ref(false)
+  const { locales, setLocale } = useI18n()
   const themeStore = useThemeStore()
 </script>
 
