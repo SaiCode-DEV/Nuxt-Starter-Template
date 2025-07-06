@@ -8,13 +8,16 @@
 </template>
 
 <script setup lang="ts">
+  import { useCountStore } from '~/stores/count'
   import { useThemeStore } from '~/stores/theme'
 
   // Initialize theme system
   const themeStore = useThemeStore()
+  const countStore = useCountStore()
 
   onMounted(() => {
     themeStore.initTheme()
+    countStore.init()
   })
 </script>
 

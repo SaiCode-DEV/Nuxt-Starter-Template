@@ -11,11 +11,18 @@ export default eventHandler(async event => {
 
   const session = await getServerSession(event)
   if (!session) {
-    throw createError({
-      statusMessage: 'Unauthenticated',
-      statusCode: 403,
-    })
+    // redirect to login or throw an error if on api route
+    if (url.startsWith('/api/')) {
+      throw createError({
+        statusMessage: 'Unauthenticated',
+        statusCode: 403,
+      })
+    }
+    // For non-API routes, redirect to login
+    setResponseStatus(event, 302)
+    setResponseHeader(event, 'Location', '/auth/login')
+    return
   }
 })
 
-const UnauthenticatedPaths = ['/api/auth', '/api/health', '/ws/']
+const UnauthenticatedPaths = ['/auth', '/api/auth', '/api/health', '/ws/']
