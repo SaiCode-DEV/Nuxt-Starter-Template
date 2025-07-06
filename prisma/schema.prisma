@@ -19,3 +19,8 @@ model User {
   updatedAt      DateTime  @updatedAt
   lastLogin      DateTime?
 }
+
+model Test {
+  id          Int       @id @default(autoincrement())
+  count       Int
+}

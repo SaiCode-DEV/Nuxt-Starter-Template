@@ -18,4 +18,4 @@ export default eventHandler(async event => {
   }
 })
 
-const UnauthenticatedPaths = ['/api/auth', '/api/health']
+const UnauthenticatedPaths = ['/api/auth', '/api/health', '/ws/']
