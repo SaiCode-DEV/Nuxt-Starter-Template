@@ -7,7 +7,7 @@
           class="d-flex justify-center align-center"
           style="height: 150px"
         >
-          <v-progress-circular indeterminate size="64"></v-progress-circular>
+          <v-progress-circular indeterminate size="64" />
         </div>
         <div v-else>
           <h1 class="text-h4 mb-4">{{ $t('dashboard.title') }}</h1>
