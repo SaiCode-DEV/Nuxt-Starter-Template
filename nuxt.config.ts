@@ -7,7 +7,9 @@ export default defineNuxtConfig({
       enabled: true,
     },
   },
-
+  experimental: {
+    componentIslands: true,
+  },
   modules: [
     'vuetify-nuxt-module',
     '@pinia/nuxt',

@@ -1,5 +1,19 @@
+import { de, en } from 'vuetify/locale'
+
 export default defineI18nConfig(() => {
   return {
+    messages: {
+      en: {
+        $vuetify: {
+          ...en,
+        },
+      },
+      de: {
+        $vuetify: {
+          ...de,
+        },
+      },
+    },
     datetimeFormats: {
       en: {
         short: {

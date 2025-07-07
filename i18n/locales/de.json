@@ -1,1 +1,15 @@
-{}
+{
+  "login": {
+    "title": "Anmelden",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "register": "Registrieren",
+    "forgotPassword": "Passwort vergessen?",
+    "error": {
+      "invalidCredentials": "Ungültige Anmeldeinformationen",
+      "userNotFound": "Benutzer nicht gefunden",
+      "accountLocked": "Konto gesperrt. Bitte kontaktieren Sie den Support."
+    }
+  }
+}
