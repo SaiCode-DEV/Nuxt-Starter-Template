@@ -4,12 +4,117 @@
     "username": "Benutzername",
     "password": "Passwort",
     "submit": "Anmelden",
-    "register": "Registrieren",
-    "forgotPassword": "Passwort vergessen?",
-    "error": {
-      "invalidCredentials": "Ungültige Anmeldeinformationen",
-      "userNotFound": "Benutzer nicht gefunden",
-      "accountLocked": "Konto gesperrt. Bitte kontaktieren Sie den Support."
+    "register": "Neues Konto erstellen",
+    "fieldRequired": "Feld ist erforderlich",
+    "notification": {
+      "loginFailed": {
+        "title": "Anmeldung fehlgeschlagen",
+        "invalidCredentials": "Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.",
+        "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+      },
+      "loginSuccess": {
+        "title": "Erfolg",
+        "message": "Anmeldung erfolgreich! Willkommen zurück."
+      }
+    }
+  },
+  "register": {
+    "title": "Neues Konto erstellen",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submit": "Registrieren",
+    "login": "Anmelden",
+    "fieldRequired": "Feld ist erforderlich",
+    "emailInvalid": "E-Mail muss gültig sein",
+    "notification": {
+      "registrationFailed": {
+        "title": "Registrierung fehlgeschlagen",
+        "defaultError": "Beim Registrieren Ihres Kontos ist ein Fehler aufgetreten.",
+        "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+      },
+      "registrationSuccess": {
+        "title": "Registrierung erfolgreich",
+        "message": "Ihr Konto wurde erfolgreich erstellt. Sie können sich jetzt anmelden."
+      }
+    }
+  },
+  "navigation": {
+    "title": "SaiCode's Vorlage",
+    "home": "Startseite",
+    "dashboard": "Dashboard",
+    "settings": "Einstellungen",
+    "signOut": "Abmelden",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren"
+  },
+  "dashboard": {
+    "title": "Test Zähler",
+    "increment": "Erhöhen",
+    "decrement": "Verringern",
+    "seo": {
+      "title": "Dashboard - Test Zähler",
+      "description": "Dashboard zum Verwalten des Testzählers."
+    }
+  },
+  "index": {
+    "hero": {
+      "title": "Willkommen bei SaiCode's Starter Template",
+      "subtitle": "Eine moderne Full-Stack-Anwendung, die mit Nuxt 3, Vuetify und Auth erstellt wurde. Alles, was Sie zum Erstellen fantastischer Webanwendungen benötigen.",
+      "getStarted": "Loslegen",
+      "goToDashboard": "Zum Dashboard",
+      "viewOnGithub": "Auf GitHub ansehen"
+    },
+    "features": {
+      "title": "Mit modernen Technologien entwickelt",
+      "subtitle": "Alles, was Sie für eine schnelle Entwicklung benötigen",
+      "nuxt": {
+        "title": "Nuxt 3",
+        "description": "Das intuitive Vue-Framework mit serverseitigem Rendering, statischer Generierung und mehr."
+      },
+      "vuetify": {
+        "title": "Vuetify",
+        "description": "Wunderschöne Material Design-Komponenten für Vue.js-Anwendungen."
+      },
+      "auth": {
+        "title": "Authentifizierung",
+        "description": "Sichere Benutzerauthentifizierung und Sitzungsverwaltung integriert."
+      },
+      "typescript": {
+        "title": "TypeScript",
+        "description": "Vollständige Typsicherheit und verbesserte Entwicklererfahrung."
+      },
+      "prisma": {
+        "title": "Prisma ORM",
+        "description": "Typsicherer Datenbankzugriff mit modernen ORM-Funktionen."
+      },
+      "tooling": {
+        "title": "Moderne Werkzeuge",
+        "description": "ESLint, Hot-Reloading und optimierter Build-Prozess inklusive."
+      }
+    },
+    "quickStart": {
+      "title": "Schnellstart-Anleitung",
+      "clone": {
+        "title": "Klonen & Installieren",
+        "description": "Klone das Repository und installiere die Abhängigkeiten mit npm oder yarn."
+      },
+      "configure": {
+        "title": "Umgebung konfigurieren",
+        "description": "Richte deine Umgebungsvariablen für Datenbank und Authentifizierung ein."
+      },
+      "run": {
+        "title": "Entwicklungsserver starten",
+        "description": "Starte den Entwicklungsserver und beginne mit der Entwicklung deiner Anwendung."
+      },
+      "deploy": {
+        "title": "Bereitstellen",
+        "description": "Stelle deine Anwendung auf deiner bevorzugten Plattform mit integrierter Optimierung bereit."
+      }
+    },
+    "seo": {
+      "title": "SaiCode's Starter Template - Lagerverwaltung",
+      "description": "Verfolgen und verwalten Sie Ihre Minecraft ME-Lagersysteme mit Leichtigkeit. Überwachen Sie Gegenstände, automatisieren Sie das Inventar und optimieren Sie die Lagereffizienz."
     }
   }
 }

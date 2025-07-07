@@ -6,21 +6,21 @@
           <template #prepend>
             <Icon name="mdi:home" size="20" />
           </template>
-          <v-list-item-title>Home</v-list-item-title>
+          <v-list-item-title>{{ $t('navigation.home') }}</v-list-item-title>
         </v-list-item>
 
         <v-list-item to="/dashboard">
           <template #prepend>
             <Icon name="mdi:view-dashboard" size="20" />
           </template>
-          <v-list-item-title>Dashboard</v-list-item-title>
+          <v-list-item-title>{{ $t('navigation.dashboard') }}</v-list-item-title>
         </v-list-item>
 
         <v-list-item to="/settings">
           <template #prepend>
             <Icon name="mdi:cog" size="20" />
           </template>
-          <v-list-item-title>Settings</v-list-item-title>
+          <v-list-item-title>{{ $t('navigation.settings') }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -84,14 +84,14 @@
             <template #prepend>
               <Icon name="mdi:cog" />
             </template>
-            <v-list-item-title>Settings</v-list-item-title>
+            <v-list-item-title>{{ $t('navigation.settings') }}</v-list-item-title>
           </v-list-item>
           <v-divider />
           <v-list-item @click="signOut({ callbackUrl: '/auth/login' })">
             <template #prepend>
               <Icon name="mdi:logout" />
             </template>
-            <v-list-item-title>Sign Out</v-list-item-title>
+            <v-list-item-title>{{ $t('navigation.signOut') }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -105,7 +105,7 @@
 
   const drawer = ref(false)
   const { data, signOut } = useAuth()
-  const { locales, setLocale } = useI18n()
+  const { locales, setLocale, t } = useI18n()
   const themeStore = useThemeStore()
 
   // Computed properties for better data handling

@@ -2,25 +2,25 @@
   <div>
     <v-navigation-drawer v-model="drawer" app temporary>
       <v-list dense nav>
-        <v-list-item to="/" nuxt>
+        <v-list-item :to="localePath('/')" nuxt>
           <template #prepend>
             <Icon name="mdi:home" size="20" />
           </template>
-          <v-list-item-title>Home</v-list-item-title>
+          <v-list-item-title>{{ $t('navigation.home') }}</v-list-item-title>
         </v-list-item>
 
-        <v-list-item to="/auth/login">
+        <v-list-item :to="localePath('/auth/login')">
           <template #prepend>
             <Icon name="mdi:login" size="20" />
           </template>
-          <v-list-item-title>Sign In</v-list-item-title>
+          <v-list-item-title>{{ $t('navigation.signIn') }}</v-list-item-title>
         </v-list-item>
 
-        <v-list-item to="/auth/register">
+        <v-list-item :to="localePath('/auth/register')">
           <template #prepend>
             <Icon name="mdi:account-plus" size="20" />
           </template>
-          <v-list-item-title>Sign Up</v-list-item-title>
+          <v-list-item-title>{{ $t('navigation.signUp') }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -30,7 +30,7 @@
 
       <Icon name="mdi:rocket-launch" size="32" class="mr-3" />
       <v-toolbar-title class="font-weight-bold">
-        SaiCode's Template
+        {{ $t('navigation.title') }}
       </v-toolbar-title>
 
       <v-spacer />
@@ -60,13 +60,22 @@
         </v-list>
       </v-menu>
 
-      <v-btn to="/auth/login" variant="outlined" color="white" class="mr-2">
+      <v-btn
+        :to="localePath('/auth/login')"
+        variant="outlined"
+        color="white"
+        class="mr-2"
+      >
         <Icon name="mdi:login" class="mr-2" />
-        Sign In
+        {{ $t('navigation.signIn') }}
       </v-btn>
-      <v-btn to="/auth/register" variant="elevated" color="primary">
+      <v-btn
+        :to="localePath('/auth/register')"
+        variant="elevated"
+        color="primary"
+      >
         <Icon name="mdi:account-plus" class="mr-2" />
-        Sign Up
+        {{ $t('navigation.signUp') }}
       </v-btn>
     </v-app-bar>
   </div>
@@ -77,8 +86,9 @@
   import { useThemeStore } from '~/stores/theme'
 
   const drawer = ref(false)
-  const { locales, setLocale } = useI18n()
+  const { locales, setLocale, t } = useI18n()
   const themeStore = useThemeStore()
+  const localePath = useLocalePath()
 </script>
 
 <style lang="scss">

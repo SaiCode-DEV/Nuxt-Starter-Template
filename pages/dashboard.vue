@@ -10,7 +10,7 @@
           <v-progress-circular indeterminate size="64"></v-progress-circular>
         </div>
         <div v-else>
-          <h1 class="text-h4 mb-4">Test Count</h1>
+          <h1 class="text-h4 mb-4">{{ $t('dashboard.title') }}</h1>
           <p class="text-h1 font-weight-bold mb-8">{{ count }}</p>
           <v-btn
             color="primary"
@@ -19,7 +19,7 @@
             @click="updateCountRequest(count! + 1)"
           >
             <v-icon left>mdi-plus</v-icon>
-            Increment
+            {{ $t('dashboard.increment') }}
           </v-btn>
           <v-btn
             color="secondary"
@@ -27,7 +27,7 @@
             @click="updateCountRequest(count! - 1)"
           >
             <v-icon left>mdi-minus</v-icon>
-            Decrement
+            {{ $t('dashboard.decrement') }}
           </v-btn>
         </div>
       </v-col>
@@ -39,6 +39,7 @@
   import { storeToRefs } from 'pinia'
   import { useCountStore } from '~/stores/count'
 
+  const { t } = useI18n()
   const countStore = useCountStore()
   const { count, loading } = storeToRefs(countStore)
   const { updateCountRequest } = countStore
@@ -50,11 +51,11 @@
 
   // Use Nuxt Head for SEO
   useHead({
-    title: 'Dashboard - Test Count',
+    title: t('dashboard.seo.title'),
     meta: [
       {
         name: 'description',
-        content: 'Dashboard to manage the test count.',
+        content: t('dashboard.seo.description'),
       },
     ],
   })

@@ -20,12 +20,10 @@
                       class="mb-6 hero-icon text-white"
                     />
                     <h1 class="hero-title text-white mb-4">
-                      Welcome to SaiCode's Starter Template
+                      {{ $t('index.hero.title') }}
                     </h1>
                     <p class="hero-subtitle text-white mb-8">
-                      A modern, full-stack application built with Nuxt 3,
-                      Vuetify, and Auth. Everything you need to build amazing
-                      web applications.
+                      {{ $t('index.hero.subtitle') }}
                     </p>
                     <div
                       class="d-flex flex-column flex-sm-row ga-4 justify-center"
@@ -36,10 +34,10 @@
                         variant="elevated"
                         color="white"
                         class="text-primary px-8"
-                        @click="navigateTo('/auth/login')"
+                        @click="navigateTo(localePath('/auth/login'))"
                       >
                         <Icon name="mdi:login" class="mr-2" />
-                        Get Started
+                        {{ $t('index.hero.getStarted') }}
                       </v-btn>
                       <v-btn
                         v-else
@@ -47,10 +45,10 @@
                         variant="elevated"
                         color="white"
                         class="text-primary px-8"
-                        @click="navigateTo('/dashboard')"
+                        @click="navigateTo(localePath('/dashboard'))"
                       >
                         <Icon name="mdi:view-dashboard" class="mr-2" />
-                        Go to Dashboard
+                        {{ $t('index.hero.goToDashboard') }}
                       </v-btn>
                       <v-btn
                         size="large"
@@ -61,7 +59,7 @@
                         target="_blank"
                       >
                         <Icon name="mdi:github" class="mr-2" />
-                        View on GitHub
+                        {{ $t('index.hero.viewOnGithub') }}
                       </v-btn>
                     </div>
                   </div>
@@ -78,10 +76,10 @@
       <v-row>
         <v-col cols="12" class="text-center mb-8">
           <h2 class="text-h3 font-weight-bold mb-4">
-            Built with Modern Technologies
+            {{ $t('index.features.title') }}
           </h2>
           <p class="text-h6 text-medium-emphasis">
-            Everything you need for rapid development
+            {{ $t('index.features.subtitle') }}
           </p>
         </v-col>
       </v-row>
@@ -109,10 +107,10 @@
                 />
               </div>
               <h3 class="text-h6 font-weight-bold mb-3">
-                {{ feature.title }}
+                {{ $t(feature.title) }}
               </h3>
               <p class="text-body-2 text-medium-emphasis">
-                {{ feature.description }}
+                {{ $t(feature.description) }}
               </p>
             </v-card-text>
           </v-card>
@@ -123,7 +121,7 @@
     <!-- Getting Started Section -->
     <v-container class="py-16 overflow-hidden">
       <v-card
-        title="Quick Start Guide"
+        :title="$t('index.quickStart.title')"
         class="pa-6 pb-0"
         elevation="4"
         variant="tonal"
@@ -142,10 +140,10 @@
                 </template>
                 <v-card elevation="2" class="mb-4">
                   <v-card-title class="text-h6">
-                    {{ step.title }}
+                    {{ $t(step.title) }}
                   </v-card-title>
                   <v-card-text>
-                    {{ step.description }}
+                    {{ $t(step.description) }}
                   </v-card-text>
                 </v-card>
               </v-timeline-item>
@@ -182,6 +180,8 @@
 <script setup lang="ts">
   // Auth composable
   const { status } = useAuth()
+  const { t } = useI18n()
+  const localePath = useLocalePath()
 
   // Page meta
   definePageMeta({
@@ -190,12 +190,11 @@
 
   // Use Nuxt Head for SEO
   useHead({
-    title: "SaiCode's Starter Template - Storage Management",
+    title: t('index.seo.title'),
     meta: [
       {
         name: 'description',
-        content:
-          'Track and manage your Minecraft ME storage systems with ease. Monitor items, automate inventory, and optimize storage efficiency.',
+        content: t('index.seo.description'),
       },
     ],
   })
@@ -203,42 +202,38 @@
   // Features data
   const features = ref([
     {
-      title: 'Nuxt 3',
-      description:
-        'The intuitive Vue framework with server-side rendering, static generation, and more.',
+      title: 'index.features.nuxt.title',
+      description: 'index.features.nuxt.description',
       icon: 'logos:nuxt-icon',
       color: '#00DC82',
     },
     {
-      title: 'Vuetify',
-      description:
-        'Beautiful Material Design components for Vue.js applications.',
+      title: 'index.features.vuetify.title',
+      description: 'index.features.vuetify.description',
       icon: 'logos:vuetifyjs',
       color: '#1976D2',
     },
     {
-      title: 'Authentication',
-      description:
-        'Secure user authentication and session management built-in.',
+      title: 'index.features.auth.title',
+      description: 'index.features.auth.description',
       icon: 'mdi:shield-check',
       color: '#FF9800',
     },
     {
-      title: 'TypeScript',
-      description: 'Full type safety and enhanced developer experience.',
+      title: 'index.features.typescript.title',
+      description: 'index.features.typescript.description',
       icon: 'logos:typescript-icon',
       color: '#3178C6',
     },
     {
-      title: 'Prisma ORM',
-      description: 'Type-safe database access with modern ORM capabilities.',
+      title: 'index.features.prisma.title',
+      description: 'index.features.prisma.description',
       icon: 'logos:prisma',
       color: '#2D3748',
     },
     {
-      title: 'Modern Tooling',
-      description:
-        'ESLint, hot reloading, and optimized build process included.',
+      title: 'index.features.tooling.title',
+      description: 'index.features.tooling.description',
       icon: 'mdi:tools',
       color: '#9C27B0',
     },
@@ -247,29 +242,26 @@
   // Quick start steps
   const quickStartSteps = ref([
     {
-      title: 'Clone & Install',
-      description:
-        'Clone the repository and install dependencies with npm or yarn.',
+      title: 'index.quickStart.clone.title',
+      description: 'index.quickStart.clone.description',
       icon: 'mdi-download',
       color: 'primary',
     },
     {
-      title: 'Configure Environment',
-      description: 'Set up your environment variables for database and auth.',
+      title: 'index.quickStart.configure.title',
+      description: 'index.quickStart.configure.description',
       icon: 'mdi-cog',
       color: 'secondary',
     },
     {
-      title: 'Run Development Server',
-      description:
-        'Start the development server and begin building your application.',
+      title: 'index.quickStart.run.title',
+      description: 'index.quickStart.run.description',
       icon: 'mdi-play',
       color: 'success',
     },
     {
-      title: 'Deploy',
-      description:
-        'Deploy to your favorite platform with built-in optimization.',
+      title: 'index.quickStart.deploy.title',
+      description: 'index.quickStart.deploy.description',
       icon: 'mdi-cloud-upload',
       color: 'info',
     },

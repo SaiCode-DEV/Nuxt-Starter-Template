@@ -1,1 +1,120 @@
-{}
+{
+  "login": {
+    "title": "Sign in",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign In",
+    "register": "Create new account",
+    "fieldRequired": "Field is required",
+    "notification": {
+      "loginFailed": {
+        "title": "Login failed",
+        "invalidCredentials": "Invalid username or password. Please try again.",
+        "unexpectedError": "An unexpected error occurred. Please try again."
+      },
+      "loginSuccess": {
+        "title": "Success",
+        "message": "Login successful! Welcome back."
+      }
+    }
+  },
+  "register": {
+    "title": "Create new account",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Register",
+    "login": "Sign in",
+    "fieldRequired": "Field is required",
+    "emailInvalid": "E-mail must be valid",
+    "notification": {
+      "registrationFailed": {
+        "title": "Registration failed",
+        "defaultError": "An error occurred while registering your account.",
+        "unexpectedError": "An unexpected error occurred. Please try again."
+      },
+      "registrationSuccess": {
+        "title": "Registration successful",
+        "message": "Your account has been created successfully. You can now log in."
+      }
+    }
+  },
+  "navigation": {
+    "title": "SaiCode's Template",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "signIn": "Sign In",
+    "signUp": "Sign Up"
+  },
+  "dashboard": {
+    "title": "Test Count",
+    "increment": "Increment",
+    "decrement": "Decrement",
+    "seo": {
+      "title": "Dashboard - Test Count",
+      "description": "Dashboard to manage the test count."
+    }
+  },
+  "index": {
+    "hero": {
+      "title": "Welcome to SaiCode's Starter Template",
+      "subtitle": "A modern, full-stack application built with Nuxt 3, Vuetify, and Auth. Everything you need to build amazing web applications.",
+      "getStarted": "Get Started",
+      "goToDashboard": "Go to Dashboard",
+      "viewOnGithub": "View on GitHub"
+    },
+    "features": {
+      "title": "Built with Modern Technologies",
+      "subtitle": "Everything you need for rapid development",
+      "nuxt": {
+        "title": "Nuxt 3",
+        "description": "The intuitive Vue framework with server-side rendering, static generation, and more."
+      },
+      "vuetify": {
+        "title": "Vuetify",
+        "description": "Beautiful Material Design components for Vue.js applications."
+      },
+      "auth": {
+        "title": "Authentication",
+        "description": "Secure user authentication and session management built-in."
+      },
+      "typescript": {
+        "title": "TypeScript",
+        "description": "Full type safety and enhanced developer experience."
+      },
+      "prisma": {
+        "title": "Prisma ORM",
+        "description": "Type-safe database access with modern ORM capabilities."
+      },
+      "tooling": {
+        "title": "Modern Tooling",
+        "description": "ESLint, hot reloading, and optimized build process included."
+      }
+    },
+    "quickStart": {
+      "title": "Quick Start Guide",
+      "clone": {
+        "title": "Clone & Install",
+        "description": "Clone the repository and install dependencies with npm or yarn."
+      },
+      "configure": {
+        "title": "Configure Environment",
+        "description": "Set up your environment variables for database and auth."
+      },
+      "run": {
+        "title": "Run Development Server",
+        "description": "Start the development server and begin building your application."
+      },
+      "deploy": {
+        "title": "Deploy",
+        "description": "Deploy to your favorite platform with built-in optimization."
+      }
+    },
+    "seo": {
+      "title": "SaiCode's Starter Template - Storage Management",
+      "description": "Track and manage your Minecraft ME storage systems with ease. Monitor items, automate inventory, and optimize storage efficiency."
+    }
+  }
+}

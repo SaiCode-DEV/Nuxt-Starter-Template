@@ -21,8 +21,7 @@ export default eventHandler(async event => {
     // For non-API routes, redirect to login
     setResponseStatus(event, 302)
     setResponseHeader(event, 'Location', '/auth/login')
-    return
   }
 })
 
-const UnauthenticatedPaths = ['/auth', '/api/auth', '/api/health', '/ws/']
+const UnauthenticatedPaths = ['/', '/auth', '/api/auth', '/api/health', '/ws/']
