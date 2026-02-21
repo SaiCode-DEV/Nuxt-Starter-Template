@@ -13,7 +13,9 @@
           <template #prepend>
             <Icon name="mdi:view-dashboard" size="20" />
           </template>
-          <v-list-item-title>{{ $t('navigation.dashboard') }}</v-list-item-title>
+          <v-list-item-title>{{
+            $t('navigation.dashboard')
+          }}</v-list-item-title>
         </v-list-item>
 
         <v-list-item to="/settings">
@@ -84,14 +86,25 @@
             <template #prepend>
               <Icon name="mdi:cog" />
             </template>
-            <v-list-item-title>{{ $t('navigation.settings') }}</v-list-item-title>
+            <v-list-item-title>{{
+              $t('navigation.settings')
+            }}</v-list-item-title>
           </v-list-item>
           <v-divider />
-          <v-list-item @click="signOut({ callbackUrl: '/auth/login' })">
+          <v-list-item
+            @click="
+              () =>
+                clear().then(() => {
+                  navigateTo('/auth/login')
+                })
+            "
+          >
             <template #prepend>
               <Icon name="mdi:logout" />
             </template>
-            <v-list-item-title>{{ $t('navigation.signOut') }}</v-list-item-title>
+            <v-list-item-title>{{
+              $t('navigation.signOut')
+            }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -101,20 +114,22 @@
 
 <script setup lang="ts">
   import { computed, ref } from 'vue'
+  import type { SessionUser } from '~/lib/types'
   import { useThemeStore } from '~/stores/theme'
 
   const drawer = ref(false)
-  const { data, signOut } = useAuth()
-  const { locales, setLocale, t } = useI18n()
+  const { user: _user, clear } = useUserSession()
+  const user = computed(() => _user.value as SessionUser | undefined)
+  const { locales, setLocale } = useI18n()
   const themeStore = useThemeStore()
 
   // Computed properties for better data handling
   const displayName = computed(() => {
-    return data.value?.user?.name || data.value?.user?.nombre || 'User'
+    return user.value?.username || 'User'
   })
 
   const profileImage = computed(() => {
-    return data.value?.user?.image || data.value?.user?.profilePicture || null
+    return user.value?.image || null
   })
 </script>
 

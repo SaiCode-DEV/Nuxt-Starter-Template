@@ -13,14 +13,12 @@ export default defineNuxtConfig({
   modules: [
     'vuetify-nuxt-module',
     '@pinia/nuxt',
-    '@prisma/nuxt',
-    '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/fonts',
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxt/scripts',
-    '@sidebase/nuxt-auth',
+    'nuxt-auth-utils',
     '@nuxt/icon',
     '@nuxtjs/i18n',
   ],
@@ -35,20 +33,6 @@ export default defineNuxtConfig({
     },
     ipx: {
       maxAge: 3600, // Cache images for 1 hour
-    },
-  },
-  auth: {
-    originEnvKey: 'AUTH_ORIGIN',
-    provider: {
-      type: 'authjs',
-      trustHost: true,
-    },
-    sessionRefresh: {
-      enablePeriodically: 30_000,
-      enableOnWindowFocus: true,
-    },
-    globalAppMiddleware: {
-      isEnabled: true,
     },
   },
   vuetify: {

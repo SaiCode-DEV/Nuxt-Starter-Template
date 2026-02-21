@@ -1,8 +1,8 @@
 <template>
-  <NavLoggedIn v-if="status === 'authenticated'" />
+  <NavLoggedIn v-if="loggedIn" />
   <NavLoggedOut v-else />
 </template>
 
 <script setup lang="ts">
-  const { status } = useAuth()
+  const { loggedIn } = useUserSession()
 </script>

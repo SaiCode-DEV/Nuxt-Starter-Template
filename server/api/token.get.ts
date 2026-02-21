@@ -1,5 +1,4 @@
-import { getToken } from '#auth'
 export default eventHandler(async event => {
-  const token = await getToken({ event })
-  return token || 'no token present'
+  const { user } = await getUserSession(event)
+  return user || 'no session present'
 })

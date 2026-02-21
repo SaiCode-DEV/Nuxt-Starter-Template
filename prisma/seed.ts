@@ -1,7 +1,11 @@
+import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '@prisma/client'
 import { hash } from 'argon2'
 
-const prisma = new PrismaClient()
+const pool = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+})
+const prisma = new PrismaClient({ adapter: pool })
 
 async function main() {
   // Check if there are any users already

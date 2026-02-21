@@ -1,16 +1,9 @@
-import { getServerSession } from '#auth'
 import { hash, verify } from 'argon2'
 import prisma from '~/lib/prisma'
+import { requireUser } from '~/server/utils/auth'
 
 export default defineEventHandler(async event => {
-  const session = await getServerSession(event)
-
-  if (!session?.user?.id) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Unauthorized',
-    })
-  }
+  const { id: userId } = await requireUser(event)
 
   const body = await readBody(event)
   const { currentPassword, newPassword } = body
@@ -31,15 +24,15 @@ export default defineEventHandler(async event => {
 
   try {
     // Get current user with password
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+    const dbUser = await prisma.user.findUnique({
+      where: { id: userId },
       select: {
         id: true,
         password: true,
       },
     })
 
-    if (!user) {
+    if (!dbUser) {
       throw createError({
         statusCode: 404,
         statusMessage: 'User not found',
@@ -47,7 +40,10 @@ export default defineEventHandler(async event => {
     }
 
     // Verify current password
-    const isCurrentPasswordValid = await verify(user.password, currentPassword)
+    const isCurrentPasswordValid = await verify(
+      dbUser.password,
+      currentPassword
+    )
 
     if (!isCurrentPasswordValid) {
       throw createError({
@@ -61,7 +57,7 @@ export default defineEventHandler(async event => {
 
     // Update user password
     await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: userId },
       data: {
         password: hashedNewPassword,
         updatedAt: new Date(),

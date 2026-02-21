@@ -4,6 +4,7 @@
     "username": "Username",
     "password": "Password",
     "submit": "Sign In",
+    "passkeySubmit": "Sign in with Passkey",
     "register": "Create new account",
     "fieldRequired": "Field is required",
     "notification": {

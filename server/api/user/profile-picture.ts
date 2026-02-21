@@ -1,8 +1,8 @@
-import { getServerSession } from '#auth'
 import formidable from 'formidable'
 import { promises as fs } from 'fs'
 import path from 'path'
 import prisma from '~/lib/prisma'
+import { requireUser } from '~/server/utils/auth'
 
 export default defineEventHandler(async event => {
   if (event.method === 'POST') {
@@ -18,14 +18,7 @@ export default defineEventHandler(async event => {
 })
 
 async function handleUpload(event: any) {
-  const session = await getServerSession(event)
-
-  if (!session?.user?.id) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Unauthorized',
-    })
-  }
+  const { id: userId } = await requireUser(event)
 
   try {
     const form = formidable({
@@ -60,7 +53,7 @@ async function handleUpload(event: any) {
 
     // Generate unique filename
     const fileExtension = path.extname(file.originalFilename || '')
-    const filename = `${session.user.id}-${Date.now()}${fileExtension}`
+    const filename = `${userId}-${Date.now()}${fileExtension}`
     const filePath = path.join(uploadDir, filename)
     const publicUrl = `/uploads/profiles/${filename}`
 
@@ -72,7 +65,7 @@ async function handleUpload(event: any) {
 
     // Get current user to delete old profile picture
     const currentUser = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: userId },
       select: { profilePicture: true },
     })
 
@@ -96,7 +89,7 @@ async function handleUpload(event: any) {
 
     // Update user with new profile picture URL
     const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: userId },
       data: {
         profilePicture: publicUrl,
         updatedAt: new Date(),
@@ -131,23 +124,16 @@ async function handleUpload(event: any) {
 }
 
 async function handleDelete(event: any) {
-  const session = await getServerSession(event)
-
-  if (!session?.user?.id) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Unauthorized',
-    })
-  }
+  const { id: userId } = await requireUser(event)
 
   try {
     // Get current user
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+    const dbUser = await prisma.user.findUnique({
+      where: { id: userId },
       select: { profilePicture: true },
     })
 
-    if (!user) {
+    if (!dbUser) {
       throw createError({
         statusCode: 404,
         statusMessage: 'User not found',
@@ -155,8 +141,11 @@ async function handleDelete(event: any) {
     }
 
     // Delete profile picture file if it exists
-    if (user.profilePicture && user.profilePicture.startsWith('/uploads/')) {
-      const filePath = path.join(process.cwd(), 'public', user.profilePicture)
+    if (
+      dbUser.profilePicture &&
+      dbUser.profilePicture.startsWith('/uploads/')
+    ) {
+      const filePath = path.join(process.cwd(), 'public', dbUser.profilePicture)
       try {
         await fs.unlink(filePath)
       } catch (error) {
@@ -167,7 +156,7 @@ async function handleDelete(event: any) {
 
     // Update user to remove profile picture
     const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: userId },
       data: {
         profilePicture: null,
         updatedAt: new Date(),

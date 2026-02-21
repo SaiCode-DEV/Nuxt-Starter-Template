@@ -17,7 +17,7 @@
                 <v-img
                   v-if="profilePictureUrl"
                   :src="profilePictureUrl"
-                  :alt="session?.user?.name || 'Profile Picture'"
+                  :alt="user?.username || 'Profile Picture'"
                 />
                 <Icon v-else name="mdi:account" size="60" />
               </v-avatar>
@@ -81,7 +81,7 @@
               <v-btn
                 type="submit"
                 color="primary"
-                :disabled="!emailForm || newEmail === session?.user?.email"
+                :disabled="!emailForm || newEmail === user?.email"
                 :loading="updatingEmail"
                 block
               >
@@ -138,6 +138,86 @@
                 Update Password
               </v-btn>
             </v-form>
+
+            <v-divider class="mb-6 mt-6" />
+
+            <!-- Passkey Management Section -->
+            <div>
+              <h3 class="text-h6 mb-4 d-flex align-center">
+                <Icon name="mdi:fingerprint" size="20" class="mr-2" />
+                Passkeys
+              </h3>
+
+              <p class="text-body-2 text-medium-emphasis mb-4">
+                Passkeys let you sign in securely without a password using
+                biometrics or a hardware key.
+              </p>
+
+              <!-- Existing passkeys list -->
+              <v-list v-if="passkeys.length > 0" class="mb-4 pa-0" lines="two">
+                <v-list-item
+                  v-for="pk in passkeys"
+                  :key="pk.id"
+                  :subtitle="
+                    'Added ' +
+                    formatDate(pk.createdAt) +
+                    (pk.lastUsedAt
+                      ? ' · Last used ' + formatDate(pk.lastUsedAt)
+                      : '')
+                  "
+                  class="pa-0 mb-2"
+                >
+                  <template #prepend>
+                    <v-icon class="mr-2">
+                      <Icon
+                        :name="pk.backedUp ? 'mdi:cloud-check' : 'mdi:key'"
+                      />
+                    </v-icon>
+                  </template>
+                  <template #title>
+                    <span class="font-weight-medium">{{
+                      pk.name || 'Unnamed passkey'
+                    }}</span>
+                  </template>
+                  <template #append>
+                    <v-btn
+                      icon
+                      variant="text"
+                      color="error"
+                      size="small"
+                      :loading="deletingPasskeyId === pk.id"
+                      @click="deletePasskey(pk.id)"
+                    >
+                      <Icon name="mdi:delete" size="18" />
+                    </v-btn>
+                  </template>
+                </v-list-item>
+              </v-list>
+
+              <p v-else class="text-body-2 text-medium-emphasis mb-4 italic">
+                No passkeys registered yet.
+              </p>
+
+              <!-- Register new passkey -->
+              <v-text-field
+                v-model="newPasskeyName"
+                label="Passkey name (optional, e.g. MacBook Touch ID)"
+                variant="outlined"
+                density="compact"
+                class="mb-3"
+              />
+
+              <v-btn
+                color="primary"
+                variant="outlined"
+                prepend-icon="mdi:fingerprint"
+                :loading="registeringPasskey"
+                block
+                @click="registerPasskey"
+              >
+                Add Passkey
+              </v-btn>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -147,10 +227,12 @@
 
 <script setup lang="ts">
   import { useNotification } from '@kyvg/vue3-notification'
+  import { startRegistration } from '@simplewebauthn/browser'
+  import type { SessionUser } from '~/lib/types'
 
   // Meta and auth
   definePageMeta({
-    middleware: 'sidebase-auth',
+    middleware: 'auth',
   })
 
   useHead({
@@ -165,13 +247,14 @@
   })
 
   // Composables
-  const { data: session, refresh } = useAuth()
+  const { user: _user, fetch: refreshSession } = useUserSession()
+  const user = computed(() => _user.value as SessionUser | undefined)
   const { notify } = useNotification()
 
   // Refs
   const fileInput = ref<HTMLInputElement>()
-  const profilePictureUrl = ref(session.value?.user?.image || '')
-  const newEmail = ref(session.value?.user?.email || '')
+  const profilePictureUrl = ref(user.value?.image || '')
+  const newEmail = ref(user.value?.email || '')
 
   // Form states
   const emailForm = ref(false)
@@ -253,7 +336,7 @@
       })
 
       // Trigger session refresh to update user data
-      await refresh()
+      await refreshSession()
 
       // Force page refresh to ensure session data is updated
       await navigateTo('/settings', { replace: true })
@@ -292,7 +375,7 @@
       })
 
       // Trigger session refresh to update user data
-      await refresh()
+      await refreshSession()
 
       // Force page refresh to ensure session data is updated
       await navigateTo('/settings', { replace: true })
@@ -326,7 +409,7 @@
       })
 
       // Trigger session refresh to update user data
-      await refresh()
+      await refreshSession()
 
       // Force page refresh to ensure session data is updated
       await navigateTo('/settings', { replace: true })
@@ -381,9 +464,124 @@
     }
   }
 
+  // Passkeys
+  interface PasskeyEntry {
+    id: string
+    name: string | null
+    backedUp: boolean
+    createdAt: string
+    lastUsedAt: string | null
+  }
+
+  const passkeys = ref<PasskeyEntry[]>([])
+  const newPasskeyName = ref('')
+  const registeringPasskey = ref(false)
+  const deletingPasskeyId = ref<string | null>(null)
+
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+
+  const loadPasskeys = async () => {
+    try {
+      passkeys.value = (await $fetch('/api/passkey/list')) as PasskeyEntry[]
+    } catch {
+      // silently ignore – not critical
+    }
+  }
+
+  const registerPasskey = async () => {
+    registeringPasskey.value = true
+    try {
+      // 1. Get registration challenge from server
+      const options = await $fetch('/api/passkey/register-challenge', {
+        method: 'POST',
+      })
+
+      // 2. Start the browser registration ceremony
+      let registrationResponse
+      try {
+        registrationResponse = await startRegistration({
+          optionsJSON: options as Parameters<
+            typeof startRegistration
+          >[0]['optionsJSON'],
+        })
+      } catch (err) {
+        const msg =
+          err instanceof Error ? err.message : 'Registration cancelled'
+        if (
+          msg.includes('cancelled') ||
+          msg.includes('abort') ||
+          msg.toLowerCase().includes('not allowed')
+        ) {
+          notify({
+            title: 'Cancelled',
+            text: 'Passkey registration was cancelled.',
+            type: 'warn',
+          })
+        } else {
+          notify({ title: 'Error', text: msg, type: 'error' })
+        }
+        return
+      }
+
+      // 3. Verify with the server
+      await $fetch('/api/passkey/register-verify', {
+        method: 'POST',
+        body: {
+          response: registrationResponse,
+          name: newPasskeyName.value || undefined,
+        },
+      })
+
+      notify({
+        title: 'Success',
+        text: 'Passkey registered successfully!',
+        type: 'success',
+      })
+      newPasskeyName.value = ''
+      await loadPasskeys()
+    } catch (error: unknown) {
+      const errorObj = error as { data?: { statusMessage?: string } }
+      notify({
+        title: 'Registration Failed',
+        text:
+          errorObj.data?.statusMessage ||
+          'Failed to register passkey. Please try again.',
+        type: 'error',
+      })
+    } finally {
+      registeringPasskey.value = false
+    }
+  }
+
+  const deletePasskey = async (id: string) => {
+    deletingPasskeyId.value = id
+    try {
+      await $fetch(`/api/passkey/${id}`, { method: 'DELETE' })
+      notify({ title: 'Success', text: 'Passkey removed.', type: 'success' })
+      await loadPasskeys()
+    } catch (error: unknown) {
+      const errorObj = error as { data?: { statusMessage?: string } }
+      notify({
+        title: 'Delete Failed',
+        text: errorObj.data?.statusMessage || 'Failed to delete passkey.',
+        type: 'error',
+      })
+    } finally {
+      deletingPasskeyId.value = null
+    }
+  }
+
+  // Load passkeys on mount
+  onMounted(loadPasskeys)
+
   // Initialize profile picture from session
   watch(
-    () => session.value?.user?.image,
+    () => user.value?.image,
     newImage => {
       if (newImage) {
         profilePictureUrl.value = newImage

@@ -1,15 +1,8 @@
-import { getServerSession } from '#auth'
 import prisma from '~/lib/prisma'
+import { requireUser } from '~/server/utils/auth'
 
 export default defineEventHandler(async event => {
-  const session = await getServerSession(event)
-
-  if (!session?.user?.id) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Unauthorized',
-    })
-  }
+  const { id: userId } = await requireUser(event)
 
   const body = await readBody(event)
   const { email } = body
@@ -36,7 +29,7 @@ export default defineEventHandler(async event => {
       where: {
         email,
         NOT: {
-          id: session.user.id,
+          id: userId,
         },
       },
     })
@@ -50,7 +43,7 @@ export default defineEventHandler(async event => {
 
     // Update user email
     const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: userId },
       data: {
         email,
         updatedAt: new Date(),

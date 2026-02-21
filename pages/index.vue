@@ -29,7 +29,7 @@
                       class="d-flex flex-column flex-sm-row ga-4 justify-center"
                     >
                       <v-btn
-                        v-if="!status || status === 'unauthenticated'"
+                        v-if="!loggedIn"
                         size="large"
                         variant="elevated"
                         color="white"
@@ -179,7 +179,7 @@
 
 <script setup lang="ts">
   // Auth composable
-  const { status } = useAuth()
+  const { loggedIn } = useUserSession()
   const { t } = useI18n()
   const localePath = useLocalePath()
 

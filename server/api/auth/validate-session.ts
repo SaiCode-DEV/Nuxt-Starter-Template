@@ -1,18 +1,9 @@
-import { getServerSession } from '#auth'
 import { createError, defineEventHandler } from 'h3'
+import { requireUser } from '~/server/utils/auth'
 import { validateUserForSession } from '~/server/utils/sessionManager'
 
 export default defineEventHandler(async event => {
-  const session = await getServerSession(event)
-
-  if (!session?.user?.id) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'No active session',
-    })
-  }
-
-  const userId = Number(session.user.id)
+  const { id: userId } = await requireUser(event)
   const isValid = await validateUserForSession(userId)
 
   if (!isValid) {

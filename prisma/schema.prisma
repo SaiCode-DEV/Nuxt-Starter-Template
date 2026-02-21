@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -18,9 +17,22 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   lastLogin      DateTime?
+
+  passkeys       Passkey[]
 }
 
-model Test {
-  id          Int       @id @default(autoincrement())
-  count       Int
+model Passkey {
+  id          String   @id
+  userId      Int
+  publicKey   String   // Base64 encoded public key
+  counter     BigInt
+  backedUp    Boolean
+  transports  String   // JSON array of transport strings
+  createdAt   DateTime @default(now())
+  lastUsedAt  DateTime?
+  name        String?  // User-defined name for the passkey (e.g., "iPhone", "YubiKey")
+
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

@@ -11,6 +11,14 @@ export interface User {
   lastLogin?: Date | null
 }
 
+/** Shape of the authenticated user stored in the nuxt-auth-utils session */
+export interface SessionUser {
+  id: number
+  username: string
+  email: string
+  image?: string | null
+}
+
 export interface AuthCredentials {
   username: string
   password: string

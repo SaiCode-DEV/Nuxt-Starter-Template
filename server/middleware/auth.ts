@@ -1,27 +1,30 @@
-// file: ~/server/middleware/auth.ts
-import { getServerSession } from '#auth'
-
 export default eventHandler(async event => {
-  const url = event.node.req.url || ''
+  const url = event.node.req.url
 
   // Skip authentication for certain paths
-  if (UnauthenticatedPaths.some(path => url.startsWith(path))) {
+  if (
+    url?.startsWith('/api/login') ||
+    url?.startsWith('/api/logout') ||
+    url?.startsWith('/api/register') ||
+    url?.startsWith('/api/public') ||
+    url === '/api/health' ||
+    url === '/api/user/me' ||
+    url?.startsWith('/api/passkey/') ||
+    url === '/api/auth/login' ||
+    url === '/api/auth/logout' ||
+    !url?.startsWith('/api/')) {
     return
   }
 
-  const session = await getServerSession(event)
-  if (!session) {
+  const { user } = await getUserSession(event)
+  if (!user) {
     // redirect to login or throw an error if on api route
-    if (url.startsWith('/api/')) {
-      throw createError({
-        statusMessage: 'Unauthenticated',
-        statusCode: 403,
-      })
-    }
-    // For non-API routes, redirect to login
-    setResponseStatus(event, 302)
+    setResponseHeader(event, 'Cache-Control', 'no-store') // Prevent caching of the response
     setResponseHeader(event, 'Location', '/auth/login')
+
+    throw createError({
+      statusMessage: 'Unauthenticated',
+      statusCode: 302,
+    })
   }
 })
-
-const UnauthenticatedPaths = ['/', '/auth', '/api/auth', '/api/health', '/ws/']

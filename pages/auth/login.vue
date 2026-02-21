@@ -33,6 +33,24 @@
             >{{ $t('login.submit') }}</v-btn
           >
         </v-form>
+
+        <div class="d-flex align-center my-3">
+          <v-divider />
+          <span class="mx-3 text-caption text-medium-emphasis">OR</span>
+          <v-divider />
+        </div>
+
+        <v-btn
+          color="secondary"
+          block
+          variant="outlined"
+          prepend-icon="mdi:fingerprint"
+          :loading="passkeyLoading"
+          class="mb-2"
+          @click="loginWithPasskey"
+          >{{ $t('login.passkeySubmit') }}</v-btn
+        >
+
         <v-btn
           color="primary"
           block
@@ -73,18 +91,20 @@
 
 <script setup>
   import { useNotification } from '@kyvg/vue3-notification'
-  const { signIn } = useAuth()
+  import { startAuthentication } from '@simplewebauthn/browser'
+  const { loggedIn } = useUserSession()
   const { notify } = useNotification()
   const { t, locales, setLocale } = useI18n()
   const localePath = useLocalePath()
 
   definePageMeta({
     layout: 'auth',
-    auth: {
-      unauthenticatedOnly: true,
-      navigateAuthenticatedTo: '/',
-    },
   })
+
+  // Redirect already-authenticated users
+  if (loggedIn.value) {
+    await navigateTo(localePath('/'))
+  }
 
   const username = ref('')
   const password = ref('')
@@ -96,36 +116,92 @@
 
   const login = async (username, password) => {
     try {
-      const response = await signIn('credentials', {
-        redirect: false,
-        username,
-        password,
+      await $fetch('/api/auth/login', {
+        method: 'POST',
+        body: { username, password },
       })
 
-      if (response?.error) {
-        notify({
-          title: t('login.notification.loginFailed.title'),
-          text: t('login.notification.loginFailed.invalidCredentials'),
-          type: 'error',
-          duration: 10000,
-        })
+      notify({
+        title: t('login.notification.loginSuccess.title'),
+        text: t('login.notification.loginSuccess.message'),
+        type: 'success',
+      })
+      await navigateTo(localePath(useRelativeCallbackUrl(useRoute()).value))
+    } catch (error) {
+      const statusMessage = error?.data?.statusMessage
+      const isInvalidCreds = statusMessage === 'Invalid credentials'
+      notify({
+        title: t('login.notification.loginFailed.title'),
+        text: isInvalidCreds
+          ? t('login.notification.loginFailed.invalidCredentials')
+          : t('login.notification.loginFailed.unexpectedError'),
+        type: 'error',
+        duration: 10000,
+      })
+    }
+  }
+
+  const passkeyLoading = ref(false)
+
+  const loginWithPasskey = async () => {
+    passkeyLoading.value = true
+    try {
+      // 1. Get authentication challenge (use username if filled, else discoverable)
+      const challengeData = await $fetch('/api/passkey/auth-challenge', {
+        method: 'POST',
+        body: { username: username.value || undefined },
+      })
+
+      // 2. Start the browser authentication ceremony
+      let authResponse
+      try {
+        authResponse = await startAuthentication({ optionsJSON: challengeData })
+      } catch (err) {
+        const msg =
+          err instanceof Error ? err.message : 'Authentication cancelled'
+        if (
+          msg.includes('cancelled') ||
+          msg.includes('abort') ||
+          msg.toLowerCase().includes('not allowed')
+        ) {
+          notify({
+            title: 'Cancelled',
+            text: 'Passkey authentication was cancelled.',
+            type: 'warn',
+          })
+        } else {
+          notify({ title: 'Error', text: msg, type: 'error' })
+        }
         return
       }
 
-      if (response?.ok) {
-        notify({
-          title: t('login.notification.loginSuccess.title'),
-          text: t('login.notification.loginSuccess.message'),
-          type: 'success',
-        })
-        await navigateTo(localePath(useRelativeCallbackUrl(useRoute()).value))
-      }
-    } catch {
+      // 3. Verify with server — setUserSession is called inside, session is now active
+      await $fetch('/api/passkey/auth-verify', {
+        method: 'POST',
+        body: {
+          response: authResponse,
+          challengeKey: challengeData.challengeKey,
+        },
+      })
+
+      notify({
+        title: t('login.notification.loginSuccess.title'),
+        text: t('login.notification.loginSuccess.message'),
+        type: 'success',
+      })
+      await navigateTo(localePath(useRelativeCallbackUrl(useRoute()).value))
+    } catch (error) {
+      const message =
+        error?.data?.statusMessage ||
+        error?.message ||
+        t('login.notification.loginFailed.unexpectedError')
       notify({
         title: t('login.notification.loginFailed.title'),
-        text: t('login.notification.loginFailed.unexpectedError'),
+        text: message,
         type: 'error',
       })
+    } finally {
+      passkeyLoading.value = false
     }
   }
 </script>

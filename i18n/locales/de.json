@@ -4,6 +4,7 @@
     "username": "Benutzername",
     "password": "Passwort",
     "submit": "Anmelden",
+    "passkeySubmit": "Mit Passkey anmelden",
     "register": "Neues Konto erstellen",
     "fieldRequired": "Feld ist erforderlich",
     "notification": {
